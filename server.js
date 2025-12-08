@@ -1,6 +1,6 @@
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
+import express from "express";
+import cors from "cors";
+import bodyParser from "body-parser";
 
 const app = express();
 const clients = new Map();
@@ -15,8 +15,7 @@ app.get("/", (req, res) => {
   res.send("✅ Figma Prompt Relay is running.");
 });
 
-
-// ---- SSE CONNECT ENDPOINT (Figma listens here) ----
+// ---- SSE CONNECT ENDPOINT ----
 app.get("/connect", (req, res) => {
   const userId = req.query.userId;
 
@@ -26,31 +25,24 @@ app.get("/connect", (req, res) => {
 
   console.log("🔌 Connection attempt from:", userId);
 
-  // Required SSE headers
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
     "Cache-Control": "no-cache, no-transform",
     "Connection": "keep-alive",
-    "Access-Control-Allow-Origin": "*"
+    "Access-Control-Allow-Origin": "*",
   });
 
-  res.flushHeaders?.();
-
-  // Prevent timeouts
   req.socket.setTimeout(0);
   req.socket.setNoDelay(true);
   req.socket.setKeepAlive(true);
 
-  // Register client
   clients.set(userId, res);
   console.log("✅ Connected:", userId);
 
-  // Heartbeat (prevents Render / proxies from closing connection)
   const heartbeat = setInterval(() => {
     res.write(":\n\n");
   }, 15000);
 
-  // Cleanup on disconnect
   req.on("close", () => {
     clearInterval(heartbeat);
     clients.delete(userId);
@@ -58,26 +50,19 @@ app.get("/connect", (req, res) => {
   });
 });
 
-
 // ---- N8N SENDS PROMPT HERE ----
 app.post("/figma-make", (req, res) => {
   const { userId, prompt } = req.body;
 
   if (!userId || !prompt) {
-    return res.status(400).json({
-      error: "userId and prompt required"
-    });
+    return res.status(400).json({ error: "userId and prompt required" });
   }
 
   const client = clients.get(userId);
-
   if (!client) {
-    return res.status(404).json({
-      error: "User not connected to Figma"
-    });
+    return res.status(404).json({ error: "User not connected to Figma" });
   }
 
-  // Send prompt to Figma via SSE
   const payload = JSON.stringify({ prompt });
 
   client.write(`event: prompt\n`);
@@ -88,10 +73,8 @@ app.post("/figma-make", (req, res) => {
   res.json({ success: true });
 });
 
-
 // ---- Startup ----
 const PORT = process.env.PORT || 3333;
-
 app.listen(PORT, () => {
   console.log(`✅ Relay running on port ${PORT}`);
 });
