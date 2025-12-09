@@ -23,7 +23,7 @@ app.get("/connect", (req, res) => {
     return res.status(400).send("Missing User ID");
   }
 
-  console.log("🔌 Connection attempt from:", userId);
+  console.log("Connection attempt from:", userId);
 
   res.writeHead(200, {
     "Content-Type": "text/event-stream",
