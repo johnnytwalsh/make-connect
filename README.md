@@ -3,7 +3,7 @@
 I use this to send JSON from an n8n workflow for creative discovery into Figma via a relay server.
 
 ## Setup
-1. Create **Custom Webhook** in Make and copy the URL
+1. Create **Custom Webhook** and copy the URL
 2. Add it to `server.js`:
    ```js
    const MAKE_WEBHOOK = "https://hook.make.com/...";
