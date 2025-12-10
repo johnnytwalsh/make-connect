@@ -1,6 +1,6 @@
 # Figma → Make Prompt Relay
 
-I use this to send JSON from n8n into Figma via a relay server.
+I use this to send JSON from an n8n workflow for creative discovery into Figma via a relay server.
 
 ## Setup
 1. Create **Custom Webhook** in Make and copy the URL
