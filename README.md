@@ -1,6 +1,6 @@
-# Figma → Make Prompt Relay
+# n8n to Figma Prompt Relay
 
-I use this to send JSON from an n8n workflow for creative discovery into Figma via a relay server.
+I use this to send JSON from an n8n workflow for creative discovery into Figma via a relay server. This was created in an attempt to automate as much of the discovery process as possible, given that Figma has not exposed an API endpoint for the Make prompt yet. The plugin displays the copy that is the result of an n8n automated workflow.
 
 ## Setup
 1. Create **Custom Webhook** and copy the URL
@@ -21,7 +21,7 @@ I use this to send JSON from an n8n workflow for creative discovery into Figma v
 ```
 
 ## Security
-- Webhook URLs are public → rotate if leaked
+- Webhook URLs are public, rotate if leaked
 - Use HTTPS
 - Don’t store secrets in Figma code
 - Add header auth if needed
