@@ -21,7 +21,7 @@ I use this to send JSON from an n8n workflow for creative discovery into Figma v
 - Add header auth if needed
 
 ## Toolchain
--Figma
--n8n
--SSE
--Render
+- Figma
+- n8n
+- SSE
+- Render
